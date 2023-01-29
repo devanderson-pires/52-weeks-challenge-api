@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
 from config import settings
+from routers.auth.router import router as auth
 
 app = FastAPI(title="52 Weeks")
+app.include_router(router=auth)
 
 if __name__ == "__main__":
     import uvicorn
