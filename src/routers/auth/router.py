@@ -11,10 +11,10 @@ from sqlalchemy.orm import Session
 
 from config import settings
 from database import SessionLocal
-from models.user import User
-from routers.auth.exceptions import credential_exception
-from routers.auth.schemas import CreateUser
-from routers.auth.schemas import User as UserSchema
+from src.models.user import User
+from src.routers.auth.exceptions import credential_exception
+from src.routers.auth.schemas import CreateUser
+from src.routers.auth.schemas import User as UserSchema
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="token")

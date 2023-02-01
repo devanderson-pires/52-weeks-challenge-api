@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from config import settings
-from routers.auth.router import router as auth
+from src.routers.auth.router import router as auth
 
 app = FastAPI(title="52 Weeks")
 
