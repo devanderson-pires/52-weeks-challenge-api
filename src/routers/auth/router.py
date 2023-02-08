@@ -14,12 +14,11 @@ from database import SessionLocal
 from src.models.user import User
 from src.routers.auth.exceptions import credential_exception
 from src.routers.auth.schemas import CreateUser
-from src.routers.auth.schemas import User as UserSchema
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_schema = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_schema = OAuth2PasswordBearer(tokenUrl="users/access-token")
 
-router = APIRouter(prefix="/users", tags=["User"])
+router = APIRouter(prefix="/users")
 
 
 def get_db():
@@ -85,6 +84,10 @@ async def get_current_user(
         raise credential_exception()
 
     user = db.query(User).filter(User.email == username).first()
+
+    if not user:
+        raise credential_exception()
+
     return user
 
 
@@ -101,7 +104,7 @@ async def login(
     return JSONResponse(content={"access_token": access_token, "type": "bearer"})
 
 
-@router.post("/create", response_model=UserSchema, status_code=status.HTTP_201_CREATED)
+@router.post("/create", status_code=status.HTTP_201_CREATED)
 async def create(user: CreateUser, db: Session = Depends(get_db)) -> JSONResponse:
     try:
         new_user = User(

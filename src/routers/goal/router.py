@@ -1,0 +1,90 @@
+from datetime import timedelta
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
+from database import SessionLocal
+from src.models.goal import Goal
+from src.models.user import User
+from src.models.week import Week
+from src.routers.auth.router import get_current_user
+from src.routers.goal.schemas import CreateGoal, IndexGoal
+
+router = APIRouter(prefix="/goals")
+
+
+def get_db():
+    db = SessionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@router.post(
+    "/create",
+    response_model=IndexGoal,
+    status_code=status.HTTP_201_CREATED,
+)
+async def create(
+    goal: CreateGoal,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    try:
+        ends_at = goal.starts_at + timedelta(weeks=51)
+        weekly_savings = []
+
+        for week in range(52):
+            index = week - 1
+            week += 1
+
+            balance = (
+                weekly_savings[index]["balance"] + (week * goal.start)
+                if weekly_savings
+                else week * goal.start
+            )
+
+            weekly_savings.append(
+                {
+                    "date": goal.starts_at + timedelta(weeks=week) - timedelta(weeks=1),
+                    "week": week,
+                    "deposit": week * goal.start,
+                    "balance": balance,
+                }
+            )
+
+        goal_amount = sum(
+            weekly_deposit["deposit"] for weekly_deposit in weekly_savings
+        )
+
+        new_goal: Goal = Goal(
+            name=goal.name,
+            goal=goal_amount,
+            start=goal.start,
+            weeks_remaining=52,
+            reached=0,
+            starts_at=goal.starts_at,
+            ends_at=ends_at,
+            user_id=current_user.id,
+        )
+        db.add(new_goal)
+        db.commit()
+
+        for weekly_deposit in weekly_savings:
+            new_week: Week = Week(
+                date=weekly_deposit["date"],
+                week=weekly_deposit["week"],
+                deposit=weekly_deposit["deposit"],
+                balance=weekly_deposit["balance"],
+                goal_id=new_goal.id,
+            )
+
+            db.add(new_week)
+
+        db.commit()
+
+        return new_goal
+    except Exception as e:
+        raise HTTPException(detail=str(e))
