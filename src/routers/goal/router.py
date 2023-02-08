@@ -92,7 +92,7 @@ async def create(
 
 
 @router.delete("/{goal_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete(
+async def destroy(
     goal_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
