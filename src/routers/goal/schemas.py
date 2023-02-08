@@ -29,3 +29,7 @@ class CreateGoal(BaseModel):
     name: str
     start: float
     starts_at: date
+
+
+class EditGoal(BaseModel):
+    name: str

@@ -9,7 +9,7 @@ from src.models.goal import Goal
 from src.models.user import User
 from src.models.week import Week
 from src.routers.auth.router import get_current_user
-from src.routers.goal.schemas import CreateGoal, IndexGoal
+from src.routers.goal.schemas import CreateGoal, EditGoal, IndexGoal
 
 router = APIRouter(prefix="/goals")
 
@@ -114,4 +114,31 @@ async def destroy(
 
     return JSONResponse(
         content="Goal deleted successfully", status_code=status.HTTP_200_OK
+    )
+
+
+@router.put("/{goal_id}", status_code=status.HTTP_200_OK)
+async def update(
+    goal_id: int,
+    goal: EditGoal,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    update_goal: Goal = (
+        db.query(Goal)
+        .filter(Goal.id == goal_id)
+        .filter(Goal.user_id == current_user.id)
+        .first()
+    )
+
+    if not update_goal:
+        raise HTTPException(
+            detail="Goal not found", status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    update_goal.name = goal.name
+    db.commit()
+
+    return JSONResponse(
+        content="Goal updated successfully", status_code=status.HTTP_200_OK
     )
