@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
@@ -88,3 +89,29 @@ async def create(
         return new_goal
     except Exception as e:
         raise HTTPException(detail=str(e))
+
+
+@router.delete("/{goal_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete(
+    goal_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    goal: Goal = (
+        db.query(Goal)
+        .filter(Goal.id == goal_id)
+        .filter(Goal.user_id == current_user.id)
+        .first()
+    )
+
+    if not goal:
+        raise HTTPException(
+            detail="Goal not found", status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    db.delete(goal)
+    db.commit()
+
+    return JSONResponse(
+        content="Goal deleted successfully", status_code=status.HTTP_200_OK
+    )
