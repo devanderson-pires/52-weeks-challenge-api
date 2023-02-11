@@ -1,6 +1,8 @@
 from datetime import timedelta
+from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -91,7 +93,7 @@ async def create(
         raise HTTPException(detail=str(e))
 
 
-@router.delete("/{goal_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{goal_id}", status_code=status.HTTP_200_OK)
 async def destroy(
     goal_id: int,
     db: Session = Depends(get_db),
@@ -142,3 +144,12 @@ async def update(
     return JSONResponse(
         content="Goal updated successfully", status_code=status.HTTP_200_OK
     )
+
+
+@router.get("/", response_model=List[IndexGoal], status_code=status.HTTP_200_OK)
+async def index(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+):
+    goals: List[Goal] = db.query(Goal).filter(Goal.user_id == current_user.id).all()
+
+    return JSONResponse(content=jsonable_encoder(goals), status_code=status.HTTP_200_OK)
