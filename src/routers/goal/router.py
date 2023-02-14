@@ -11,7 +11,8 @@ from src.models.goal import Goal
 from src.models.user import User
 from src.models.week import Week
 from src.routers.auth.router import get_current_user
-from src.routers.goal.schemas import CreateGoal, EditGoal, IndexGoal
+from src.routers.goal.schemas import CreateGoal, EditGoal
+from src.routers.goal.schemas import Goal as GoalSchema
 
 router = APIRouter(prefix="/goals")
 
@@ -27,7 +28,7 @@ def get_db():
 
 @router.post(
     "/create",
-    response_model=IndexGoal,
+    response_model=GoalSchema,
     status_code=status.HTTP_201_CREATED,
 )
 async def create(
@@ -146,7 +147,7 @@ async def update(
     )
 
 
-@router.get("/", response_model=List[IndexGoal], status_code=status.HTTP_200_OK)
+@router.get("/", response_model=List[GoalSchema], status_code=status.HTTP_200_OK)
 async def index(
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):

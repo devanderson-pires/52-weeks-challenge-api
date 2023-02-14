@@ -15,3 +15,7 @@ class Week(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class EditWeek(BaseModel):
+    done: bool
