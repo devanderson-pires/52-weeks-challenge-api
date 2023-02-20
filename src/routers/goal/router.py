@@ -2,7 +2,6 @@ from datetime import timedelta
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -153,4 +152,4 @@ async def index(
 ):
     goals: List[Goal] = db.query(Goal).filter(Goal.user_id == current_user.id).all()
 
-    return JSONResponse(content=jsonable_encoder(goals), status_code=status.HTTP_200_OK)
+    return goals
