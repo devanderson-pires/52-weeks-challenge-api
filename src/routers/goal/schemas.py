@@ -1,7 +1,9 @@
 from datetime import date
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
+
+from src.routers.week.schemas import Week
 
 
 class Goal(BaseModel):
@@ -17,6 +19,10 @@ class Goal(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class ShowGoal(Goal):
+    weeks: List[Week]
 
 
 class CreateGoal(BaseModel):

@@ -12,6 +12,7 @@ from src.models.week import Week
 from src.routers.auth.router import get_current_user
 from src.routers.goal.schemas import CreateGoal, EditGoal
 from src.routers.goal.schemas import Goal as GoalSchema
+from src.routers.goal.schemas import ShowGoal
 
 router = APIRouter(prefix="/goals")
 
@@ -23,6 +24,39 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+@router.get("/", response_model=List[GoalSchema], status_code=status.HTTP_200_OK)
+async def index(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+):
+    goals: List[Goal] = db.query(Goal).filter(Goal.user_id == current_user.id).all()
+
+    return goals
+
+
+@router.get("/{id}", response_model=ShowGoal, status_code=status.HTTP_200_OK)
+async def show(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    try:
+        goal: Goal = (
+            db.query(Goal)
+            .filter(Goal.id == id)
+            .filter(Goal.user_id == current_user.id)
+            .first()
+        )
+
+        if not goal:
+            raise HTTPException(
+                detail="Goal not found", status_code=status.HTTP_404_NOT_FOUND
+            )
+
+        return goal
+    except Exception as e:
+        raise HTTPException(detail=str(e))
 
 
 @router.post(
@@ -93,32 +127,6 @@ async def create(
         raise HTTPException(detail=str(e))
 
 
-@router.delete("/{goal_id}", status_code=status.HTTP_200_OK)
-async def destroy(
-    goal_id: int,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
-    goal: Goal = (
-        db.query(Goal)
-        .filter(Goal.id == goal_id)
-        .filter(Goal.user_id == current_user.id)
-        .first()
-    )
-
-    if not goal:
-        raise HTTPException(
-            detail="Goal not found", status_code=status.HTTP_404_NOT_FOUND
-        )
-
-    db.delete(goal)
-    db.commit()
-
-    return JSONResponse(
-        content="Goal deleted successfully", status_code=status.HTTP_200_OK
-    )
-
-
 @router.put("/{goal_id}", status_code=status.HTTP_200_OK)
 async def update(
     goal_id: int,
@@ -146,10 +154,27 @@ async def update(
     )
 
 
-@router.get("/", response_model=List[GoalSchema], status_code=status.HTTP_200_OK)
-async def index(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+@router.delete("/{goal_id}", status_code=status.HTTP_200_OK)
+async def destroy(
+    goal_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    goals: List[Goal] = db.query(Goal).filter(Goal.user_id == current_user.id).all()
+    goal: Goal = (
+        db.query(Goal)
+        .filter(Goal.id == goal_id)
+        .filter(Goal.user_id == current_user.id)
+        .first()
+    )
 
-    return goals
+    if not goal:
+        raise HTTPException(
+            detail="Goal not found", status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    db.delete(goal)
+    db.commit()
+
+    return JSONResponse(
+        content="Goal deleted successfully", status_code=status.HTTP_200_OK
+    )
