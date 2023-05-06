@@ -9,3 +9,47 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+
+  Goal Goal[]
+
+  @@map("users")
+}
+
+model Goal {
+  id              String   @id @default(uuid())
+  name            String
+  goal            Decimal
+  start           Decimal
+  weeks_remaining Int
+  reaced          Decimal
+  starts_at       DateTime
+  ends_at         DateTime
+
+  Week Week[]
+
+  User    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
+
+  @@map("goals")
+}
+
+model Week {
+  id      String   @id @default(uuid())
+  date    DateTime
+  week    Int
+  deposit Decimal
+  balance Decimal
+  done    Boolean  @default(false)
+
+  Goal    Goal   @relation(fields: [goal_id], references: [id], onDelete: Cascade)
+  goal_id String
+
+  @@map("weeks")
+}
