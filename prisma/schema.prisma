@@ -27,8 +27,8 @@ model Goal {
   name            String
   goal            Decimal
   start           Decimal
-  weeks_remaining Int
-  reaced          Decimal
+  weeks_remaining Int      @default(52)
+  reached         Decimal  @default(0)
   starts_at       DateTime
   ends_at         DateTime
 
