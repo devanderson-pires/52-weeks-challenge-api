@@ -15,8 +15,8 @@ describe("Goal Use Case", () => {
 		const { goal } = await sut.execute({
 			name: "Viagem para a praia",
 			start: 1,
-			starts_at: new Date("2023-05-08"),
-			user_id: "user-1"
+			startsAt: new Date("2023-05-08"),
+			userId: "user-1"
 		})
 
 		expect(goal.id).toEqual(expect.any(String))
@@ -26,8 +26,8 @@ describe("Goal Use Case", () => {
 		const { goal } = await sut.execute({
 			name: "Viagem para a praia",
 			start: 1,
-			starts_at: new Date("2023-05-08"),
-			user_id: "user-1"
+			startsAt: new Date("2023-05-08"),
+			userId: "user-1"
 		})
 
 		expect(goal.ends_at).toEqual(new Date("2024-04-29"))
@@ -37,8 +37,8 @@ describe("Goal Use Case", () => {
 		const { goal } = await sut.execute({
 			name: "Viagem para a praia",
 			start: 1,
-			starts_at: new Date("2023-05-08"),
-			user_id: "user-1"
+			startsAt: new Date("2023-05-08"),
+			userId: "user-1"
 		})
 
 		expect(goal.goal.toNumber()).toEqual(1378)

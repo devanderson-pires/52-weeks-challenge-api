@@ -29,7 +29,7 @@ export class InMemoryGoalsRepository implements GoalsRepository {
 		return goal
 	}
 
-	async findByUser(userId: string) {
+	async findByUserId(userId: string) {
 		const goal = this.items.find(item => item.user_id === userId)
 
 		if (!goal) return null
