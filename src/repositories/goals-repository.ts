@@ -4,4 +4,5 @@ export interface GoalsRepository {
 	create(data: Prisma.GoalUncheckedCreateInput): Promise<Goal>;
 	findById(id: string): Promise<Goal | null>;
 	findByUserId(userId: string): Promise<Goal | null>;
+	findManyByUserId(userId: string): Promise<Goal[]>;
 }
