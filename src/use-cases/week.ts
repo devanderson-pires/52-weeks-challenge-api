@@ -8,7 +8,7 @@ interface WeekUseCaseRequest {
 }
 
 interface WeekUseCaseResponse {
-	weeks: Week[]
+	weeks: Week[] | void
 }
 
 export class WeekUseCase {

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto"
 import { WeeksRepository } from "../weeks-repository"
-import { weeklyDepositsGenerator } from "@/utils/weekly-deposits-generator"
+import { generateWeeklyDepositsList } from "@/utils/generate-weekly-deposits-list"
 import { Week } from "@prisma/client"
 import { Decimal } from "@prisma/client/runtime"
 
@@ -8,7 +8,7 @@ export class InMemoryWeeksRepository implements WeeksRepository {
 	public items: Week[] = []
 
 	async create(goalId: string, startsAt: Date, start: number) {
-		const weeks = weeklyDepositsGenerator(startsAt, start)
+		const weeks = generateWeeklyDepositsList(goalId, startsAt, start)
         
 		weeks.map(week => this.items.push({
 			id: randomUUID(),
