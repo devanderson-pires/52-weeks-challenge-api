@@ -1,4 +1,4 @@
-import { makeFetchUserGoalsUseCase } from "@/use-cases/factories/make-fetch-user-goals"
+import { makeFetchUserGoalsUseCase } from "@/use-cases/factories/make-fetch-user-goals-use-case"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { z } from "zod"
 

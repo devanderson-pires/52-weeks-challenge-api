@@ -6,7 +6,7 @@ interface Week {
 	week: number
 	deposit: Prisma.Decimal
 	balance: Prisma.Decimal
-    goal_id: string
+	goal_id: string
 }
 
 export const generateWeeklyDepositsList = (goalId: string, startsAt: Date, start: number) => {
