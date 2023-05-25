@@ -7,18 +7,17 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 	const createGoalBodySchema = z.object({
 		name: z.string(),
 		start: z.coerce.number(),
-		startsAt: z.coerce.date(),
-		userId: z.string().uuid()
+		startsAt: z.coerce.date()
 	})
 
-	const { name, start, startsAt, userId } = createGoalBodySchema.parse(request.body)
+	const { name, start, startsAt } = createGoalBodySchema.parse(request.body)
 
 	const goalUseCase = makeGoalUseCase()
 	const { goal } = await goalUseCase.execute({
 		name,
 		start,
 		startsAt,
-		userId
+		userId: request.user.sub
 	})
 
 	const weekUseCase = makeWeekUseCase()

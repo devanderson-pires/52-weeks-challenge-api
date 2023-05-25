@@ -15,5 +15,5 @@ export async function destroy(request: FastifyRequest, reply: FastifyReply) {
 		userId: request.user.sub
 	})
 
-	return reply.status(204).send({})
+	return reply.status(204).send()
 }

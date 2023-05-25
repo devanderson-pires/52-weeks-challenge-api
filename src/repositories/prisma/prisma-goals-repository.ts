@@ -11,7 +11,7 @@ export class PrismaGoalsRepository implements GoalsRepository {
 		return await prisma.goal.findUnique({ where: { id } })
 	}
 
-	async deleteById(id: string, userId: string) {
+	async deleteByIdAndUserId(id: string, userId: string) {
 		const { count } = await prisma.goal.deleteMany({
 			where: {
 				id,

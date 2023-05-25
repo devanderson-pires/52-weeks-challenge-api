@@ -21,7 +21,7 @@ export class InMemoryGoalsRepository implements GoalsRepository {
 		return goal
 	}
 
-	async deleteById(id: string, userId: string) {
+	async deleteByIdAndUserId(id: string, userId: string) {
 		const goal = this.items.find(item => item.id === id && item.user_id === userId)
 
 		if (!goal) return null

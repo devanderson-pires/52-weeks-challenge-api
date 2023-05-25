@@ -15,7 +15,7 @@ export class DeleteUserGoalUseCase {
 	constructor(private goalsRepository: GoalsRepository) {}
 
 	async execute({ goalId, userId }: DeleteUserGoalUseCaseRequest): Promise<DeleteUserGoalUseCaseResponse> {
-		const goal = await this.goalsRepository.deleteById(goalId, userId)
+		const goal = await this.goalsRepository.deleteByIdAndUserId(goalId, userId)
 
 		if (!goal) throw new ResourceNotFoundError()
 		
