@@ -5,4 +5,5 @@ export interface GoalsRepository {
 	deleteByIdAndUserId(id: string, userId: string): Promise<Goal | null | number>
 	findById(id: string): Promise<Goal | null>
 	findManyByUserId(userId: string): Promise<Goal[]>
+    update(id: string, name: string): Promise<Goal | null>
 }

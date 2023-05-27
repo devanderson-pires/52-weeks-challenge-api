@@ -3,6 +3,6 @@ import { FetchUserGoalsUseCase } from "../fetch-user-goals"
 
 export function makeFetchUserGoalsUseCase() {
 	const goalsRepository = new PrismaGoalsRepository()
-	const fetchUserGoalsUseCase = new FetchUserGoalsUseCase(goalsRepository)
-	return fetchUserGoalsUseCase
+	const useCase = new FetchUserGoalsUseCase(goalsRepository)
+	return useCase
 }

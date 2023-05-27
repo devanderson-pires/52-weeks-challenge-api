@@ -42,4 +42,14 @@ export class InMemoryGoalsRepository implements GoalsRepository {
 	async findManyByUserId(userId: string) {
 		return this.items.filter(item => item.user_id === userId)
 	}
+
+	async update(id: string, name: string) {
+		const goal = this.items.find(item => item.id === id)
+
+		if (!goal) return null
+
+		goal.name = name
+
+		return goal
+	}
 }

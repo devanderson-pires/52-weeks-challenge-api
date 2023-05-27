@@ -3,6 +3,6 @@ import { WeekUseCase } from "../week"
 
 export function makeWeekUseCase() {
 	const weeksRepository = new PrismaWeeksRepository()
-	const weekUseCase = new WeekUseCase(weeksRepository)
-	return weekUseCase
+	const useCase = new WeekUseCase(weeksRepository)
+	return useCase
 }

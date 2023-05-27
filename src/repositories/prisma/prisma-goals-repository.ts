@@ -25,4 +25,9 @@ export class PrismaGoalsRepository implements GoalsRepository {
 	async findManyByUserId(userId: string) {
 		return await prisma.goal.findMany({ where: { user_id: userId } })
 	}
+
+	async update(id: string, name: string) {
+		return await prisma.goal.update({ data: { name} , where: { id } }
+		)
+	}
 }
