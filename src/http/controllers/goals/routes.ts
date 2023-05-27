@@ -3,9 +3,13 @@ import { create } from "./create"
 import { fetchByUser } from "./fetch-by-user"
 import { verifyJwt } from "@/http/middlewares/verify-jwt"
 import { destroy } from "./destroy"
+import { getByUser } from "./get-by-user"
 
 export async function goalsRoutes(app: FastifyInstance) {
-	app.post("/goals", { onRequest: [verifyJwt] }, create)
-	app.get("/goals", { onRequest: [verifyJwt] }, fetchByUser)
 	app.delete("/goals", { onRequest: [verifyJwt] }, destroy)
+
+	app.get("/goals", { onRequest: [verifyJwt] }, fetchByUser)
+	app.get("/goals/:goalId", { onRequest: [verifyJwt] }, getByUser)
+
+	app.post("/goals", { onRequest: [verifyJwt] }, create)
 }
