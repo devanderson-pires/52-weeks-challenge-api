@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it } from "vitest"
 import { InMemoryGoalsRepository } from "@/repositories/in-memory/in-memory-goals-repository"
-import { DeleteUserGoalUseCase } from "../delete-user-goal"
+import { DeleteGoalUseCase } from "../delete-goal"
 
 let goalsRepository: InMemoryGoalsRepository,
-	sut: DeleteUserGoalUseCase
+	sut: DeleteGoalUseCase
 
-describe("Delete User Goal Use Case", () => {
+describe("Delete Goal Use Case", () => {
 	beforeEach(() => {
 		goalsRepository = new InMemoryGoalsRepository()
-		sut = new DeleteUserGoalUseCase(goalsRepository)
+		sut = new DeleteGoalUseCase(goalsRepository)
 	})
 
 	it("should be able to delete a goal", async () => {
