@@ -12,12 +12,7 @@ export class PrismaGoalsRepository implements GoalsRepository {
 	}
 
 	async deleteByIdAndUserId(id: string, userId: string) {
-		const { count } = await prisma.goal.deleteMany({
-			where: {
-				id,
-				user_id: userId
-			}
-		})
+		const { count } = await prisma.goal.deleteMany({ where: { id, user_id: userId } })
 
 		return count
 	}
@@ -27,7 +22,13 @@ export class PrismaGoalsRepository implements GoalsRepository {
 	}
 
 	async update(id: string, name: string) {
-		return await prisma.goal.update({ data: { name} , where: { id } }
-		)
+		const goal = await prisma.goal.findUnique({ where: { id } })
+
+		if (!goal) return null
+
+		return await prisma.goal.update({
+			data: { name } ,
+			where: { id }
+		})
 	}
 }
