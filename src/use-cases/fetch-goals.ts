@@ -1,18 +1,18 @@
 import { GoalsRepository } from "@/repositories/goals-repository"
 import { Goal } from "@prisma/client"
 
-interface FetchUserGoalsUseCaseRequest {
+interface FetchGoalsUseCaseRequest {
 	userId: string
 }
 
-interface FetchUserGoalsUseCaseResponse {
+interface FetchGoalsUseCaseResponse {
 	goals: Goal[]
 }
 
-export class FetchUserGoalsUseCase {
+export class FetchGoalsUseCase {
 	constructor(private goalsRepository: GoalsRepository) {}
 
-	async execute({ userId }: FetchUserGoalsUseCaseRequest): Promise<FetchUserGoalsUseCaseResponse> {
+	async execute({ userId }: FetchGoalsUseCaseRequest): Promise<FetchGoalsUseCaseResponse> {
 		const goals = await this.goalsRepository.findManyByUserId(userId)
 
 		return { goals }
