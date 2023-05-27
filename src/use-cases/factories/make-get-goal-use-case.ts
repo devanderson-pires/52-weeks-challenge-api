@@ -1,8 +1,8 @@
 import { PrismaGoalsRepository } from "@/repositories/prisma/prisma-goals-repository"
-import { GetUserGoalUseCase } from "../get-user-goal"
+import { GetGoalUseCase } from "../get-goal"
 
-export function makeGetUserGoalUseCase() {
+export function makeGetGoalUseCase() {
 	const goalsRepository = new PrismaGoalsRepository()
-	const useCase = new GetUserGoalUseCase(goalsRepository)
+	const useCase = new GetGoalUseCase(goalsRepository)
 	return useCase
 }

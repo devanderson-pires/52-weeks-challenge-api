@@ -1,17 +1,17 @@
 import { beforeEach, describe, expect, it } from "vitest"
 import { InMemoryGoalsRepository } from "@/repositories/in-memory/in-memory-goals-repository"
-import { GetUserGoalUseCase } from "../get-user-goal"
+import { GetGoalUseCase } from "../get-goal"
 
 let goalsRepository: InMemoryGoalsRepository,
-	sut: GetUserGoalUseCase
+	sut: GetGoalUseCase
 
-describe("Get User Goal Use Case", () => {
+describe("Get Goal Use Case", () => {
 	beforeEach(() => {
 		goalsRepository = new InMemoryGoalsRepository()
-		sut = new GetUserGoalUseCase(goalsRepository)
+		sut = new GetGoalUseCase(goalsRepository)
 	})
 
-	it("should be able to get user goal", async () => {
+	it("should be able to get goal", async () => {
 		const { id } = await goalsRepository.create({
 			name: "Viagem para a praia",
 			goal: 1378,
