@@ -21,14 +21,23 @@ export class PrismaGoalsRepository implements GoalsRepository {
 		return await prisma.goal.findMany({ where: { user_id: userId } })
 	}
 
-	async update(id: string, name: string) {
+	async update(id: string, name?: string, weeksRemaining?: number, reached?: number) {
 		const goal = await prisma.goal.findUnique({ where: { id } })
 
-		if (!goal) return null
+		if (goal) {
+			if (name && !weeksRemaining && !reached) {
+				return await prisma.goal.update({
+					data: { name },
+					where: { id }
+				})
+			} else if (!name && weeksRemaining && reached) {
+				return await prisma.goal.update({
+					data: { weeks_remaining: weeksRemaining, reached },
+					where: { id }
+				})
+			}
+		}
 
-		return await prisma.goal.update({
-			data: { name } ,
-			where: { id }
-		})
+		return null
 	}
 }

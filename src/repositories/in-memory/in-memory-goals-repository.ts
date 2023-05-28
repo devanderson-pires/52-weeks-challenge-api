@@ -43,13 +43,20 @@ export class InMemoryGoalsRepository implements GoalsRepository {
 		return this.items.filter(item => item.user_id === userId)
 	}
 
-	async update(id: string, name: string) {
+	async update(id: string, name?: string, weeksRemaining?: number, reached?: number) {
 		const goal = this.items.find(item => item.id === id)
 
-		if (!goal) return null
+		if (goal) {
+			if (name && !weeksRemaining && !reached) {
+				goal.name = name
+			} else if (!name && weeksRemaining && reached) {
+				goal.weeks_remaining = weeksRemaining
+				goal.reached = new Prisma.Decimal(reached)
+			}
 
-		goal.name = name
+			return goal
+		}
 
-		return goal
+		return null
 	}
 }
