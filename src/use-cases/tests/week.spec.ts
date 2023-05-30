@@ -5,7 +5,7 @@ import { WeekUseCase } from "../week"
 let weeksRepository: InMemoryWeeksRepository,
 	sut: WeekUseCase
 
-describe("Goal Use Case", () => {
+describe("Week Use Case", () => {
 	beforeEach(() => {
 		weeksRepository = new InMemoryWeeksRepository()
 		sut = new WeekUseCase(weeksRepository)

@@ -23,14 +23,22 @@ export class InMemoryWeeksRepository implements WeeksRepository {
 	}
 
 	async findById(id: string) {
-		const goal = this.items.find(item => item.id === id)
+		const week = this.items.find(item => item.id === id)
 
-		if (!goal) return null
+		if (!week) return null
 
-		return goal
+		return week
 	}
 
 	async findManyByGoalId(goalId: string) {
 		return this.items.filter(item => item.goal_id === goalId)
+	}
+
+	async update(week: Week) {
+		const idx = this.items.findIndex(item => item.id === week.id)
+
+		if (idx >= 0) this.items[idx] = week
+
+		return week
 	}
 }

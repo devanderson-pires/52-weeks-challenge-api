@@ -49,7 +49,7 @@ export class InMemoryGoalsRepository implements GoalsRepository {
 		if (goal) {
 			if (name && !weeksRemaining && !reached) {
 				goal.name = name
-			} else if (!name && weeksRemaining && reached) {
+			} else if (!name && weeksRemaining && reached !== undefined) {
 				goal.weeks_remaining = weeksRemaining
 				goal.reached = new Prisma.Decimal(reached)
 			}

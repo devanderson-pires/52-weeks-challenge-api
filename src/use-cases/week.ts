@@ -2,8 +2,8 @@ import { WeeksRepository } from "@/repositories/weeks-repository"
 import { Week } from "@prisma/client"
 
 interface WeekUseCaseRequest {
-	goalId: string,
-	start: number,
+	goalId: string
+	start: number
 	startsAt: Date
 }
 

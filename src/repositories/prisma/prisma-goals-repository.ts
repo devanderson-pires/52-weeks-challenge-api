@@ -30,7 +30,7 @@ export class PrismaGoalsRepository implements GoalsRepository {
 					data: { name },
 					where: { id }
 				})
-			} else if (!name && weeksRemaining && reached) {
+			} else if (!name && weeksRemaining && reached !== undefined) {
 				return await prisma.goal.update({
 					data: { weeks_remaining: weeksRemaining, reached },
 					where: { id }

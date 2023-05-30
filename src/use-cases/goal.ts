@@ -4,9 +4,9 @@ import { Goal } from "@prisma/client"
 import dayjs from "dayjs"
 
 interface GoalUseCaseRequest {
-	name: string,
-	start: number,
-	startsAt: Date,
+	name: string
+	start: number
+	startsAt: Date
 	userId: string
 }
 
