@@ -1,4 +1,5 @@
 import { GoalsRepository } from "@/repositories/goals-repository"
+import { addWeeksToADate } from "@/utils/add-weeks-to-a-date"
 import { sumWeeklyDeposits } from "@/utils/sum-weekly-deposits"
 import { Goal } from "@prisma/client"
 import dayjs from "dayjs"
@@ -18,7 +19,7 @@ export class GoalUseCase {
 	constructor(private goalsRepository: GoalsRepository) {}
 
 	async execute(data: GoalUseCaseRequest): Promise<GoalUseCaseResponse> {
-		const endsAt = dayjs(data.startsAt).add(51, "weeks").toDate()
+		const endsAt = addWeeksToADate(data.startsAt)
 		const saveInOneYear  = sumWeeklyDeposits(data.start)
 		
 		const goal = await this.goalsRepository.create({
